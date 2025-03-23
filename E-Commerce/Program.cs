@@ -1,11 +1,13 @@
+using Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Persistance.Data;
+using Persistance.Data.DataSeeding;
 
 namespace E_Commerce
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -19,9 +21,10 @@ namespace E_Commerce
             {
                 optios.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+            builder.Services.AddScoped<IDbIntializer, DbIntializer>();
 
             var app = builder.Build();
-
+            await IntializeDbAsync(app);
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -37,6 +40,12 @@ namespace E_Commerce
             app.MapControllers();
 
             app.Run();
+            async Task IntializeDbAsync(WebApplication app)
+            {
+                using var scope = app.Services.CreateScope();
+                var dbIntializer = scope.ServiceProvider.GetRequiredService<IDbIntializer>();
+                await dbIntializer.IntializAsync();
+            }
         }
     }
 }

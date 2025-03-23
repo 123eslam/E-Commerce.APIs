@@ -14,6 +14,6 @@
         //Navigation property one [ProductType]
         public ProductType ProductType { get; set; } = default!;
         //FK
-        public int ProductId { get; set; }
+        public int TypeId { get; set; }
     }
 }

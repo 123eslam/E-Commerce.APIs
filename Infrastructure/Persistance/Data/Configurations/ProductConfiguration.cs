@@ -10,7 +10,7 @@
                    .HasForeignKey(P => P.BrandId);
             builder.HasOne(P => P.ProductType)
                    .WithMany()
-                   .HasForeignKey(P => P.ProductId);
+                   .HasForeignKey(P => P.TypeId);
         }
     }
 }
