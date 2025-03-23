@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Persistance.Data;
+
 namespace E_Commerce
 {
     public class Program
@@ -12,6 +15,10 @@ namespace E_Commerce
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddDbContext<AppDbContext>(optios =>
+            {
+                optios.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             var app = builder.Build();
 

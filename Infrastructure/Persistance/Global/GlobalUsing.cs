@@ -1,0 +1,4 @@
+﻿global using Domain.Entities.Products;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using System.Reflection;
