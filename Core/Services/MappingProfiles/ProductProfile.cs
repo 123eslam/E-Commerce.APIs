@@ -1,0 +1,18 @@
+﻿using AutoMapper;
+using Domain.Entities.Products;
+using Shared.ProductDtos;
+
+namespace Services.MappingProfiles
+{
+    public class ProductProfile : Profile
+    {
+        public ProductProfile()
+        {
+            CreateMap<ProductBrand, BrandResultDto>();
+            CreateMap<ProductType, TypeResultDto>();
+            CreateMap<Product, ProductResultDto>()
+                .ForMember(d => d.BrandName, options => options.MapFrom(s => s.ProductBrand.Name))
+                .ForMember(d => d.TypeName, options => options.MapFrom(s => s.ProductType.Name));
+        }
+    }
+}

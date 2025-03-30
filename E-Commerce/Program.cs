@@ -2,6 +2,7 @@ using Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Persistance.Data;
 using Persistance.Data.DataSeeding;
+using Persistance.Repositories;
 
 namespace E_Commerce
 {
@@ -22,6 +23,8 @@ namespace E_Commerce
                 optios.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
             builder.Services.AddScoped<IDbIntializer, DbIntializer>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddAutoMapper(typeof(Services.AssemblyReference).Assembly);
 
             var app = builder.Build();
             await IntializeDbAsync(app);
