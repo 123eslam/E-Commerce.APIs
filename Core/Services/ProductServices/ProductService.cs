@@ -2,6 +2,7 @@
 using Domain.Contracts;
 using Domain.Entities.Products;
 using Services.Abstraction;
+using Services.Specifications;
 using Shared.ProductDtos;
 
 namespace Services.ProductServices
@@ -18,16 +19,6 @@ namespace Services.ProductServices
             return brandsResult;
         }
 
-        public async Task<IEnumerable<ProductResultDto>> GetAllProductAsync()
-        {
-            //1. Retrieve all products => UnitOfWork
-            var products = await UnitOfWork.GetRepository<Product, int>().GetAllAsync();
-            //2. Map to ProductResultDto => IMapper
-            var productsResult = Mapper.Map<IEnumerable<ProductResultDto>>(products);
-            //3. Return IEnumerable<ProductResultDto>
-            return productsResult;
-        }
-
         public async Task<IEnumerable<TypeResultDto>> GetAllTypeAsync()
         {
             //1. Retrieve all types => UnitOfWork
@@ -38,10 +29,20 @@ namespace Services.ProductServices
             return typesResult;
         }
 
+        public async Task<IEnumerable<ProductResultDto>> GetAllProductAsync()
+        {
+            //1. Retrieve all products => UnitOfWork
+            var products = await UnitOfWork.GetRepository<Product, int>().GetAllAsync(new ProductWithBrandAndTypeSpecifications());
+            //2. Map to ProductResultDto => IMapper
+            var productsResult = Mapper.Map<IEnumerable<ProductResultDto>>(products);
+            //3. Return IEnumerable<ProductResultDto>
+            return productsResult;
+        }
+
         public async Task<ProductResultDto> GetProductByIdAsync(int id)
         {
             //1. Retrieve product by id => UnitOfWork
-            var product = await UnitOfWork.GetRepository<Product, int>().GetByIdAsync(id);
+            var product = await UnitOfWork.GetRepository<Product, int>().GetByIdAsync(new ProductWithBrandAndTypeSpecifications(id));
             //2. Map to ProductResultDto => IMapper
             var productResult = Mapper.Map<ProductResultDto>(product);
             //3. Return ProductResultDto
