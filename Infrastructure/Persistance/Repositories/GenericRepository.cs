@@ -15,5 +15,14 @@
         public async Task<IEnumerable<TEntity>> GetAllAsync(bool asNoTracking = true) => asNoTracking ?
             await _dbContext.Set<TEntity>().AsNoTracking().ToListAsync()
             : await _dbContext.Set<TEntity>().ToListAsync();
+
+        public async Task<TEntity?> GetByIdAsync(Specifications<TEntity> specifications)
+            => await ApplySpecifications(specifications).FirstOrDefaultAsync();
+
+        public async Task<IEnumerable<TEntity>> GetAllAsync(Specifications<TEntity> specifications)
+            => await ApplySpecifications(specifications).ToListAsync();
+
+        private IQueryable<TEntity> ApplySpecifications(Specifications<TEntity> specifications)
+            => SpecificationEvaluator.GetQuery(_dbContext.Set<TEntity>(), specifications);
     }
 }
