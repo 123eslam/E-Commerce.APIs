@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Contracts;
 using Domain.Entities.Products;
+using Domain.Exceptions;
 using Services.Abstraction;
 using Services.Specifications;
 using Shared.Parameters;
@@ -56,7 +57,8 @@ namespace Services.ProductServices
             //2. Map to ProductResultDto => IMapper
             var productResult = Mapper.Map<ProductResultDto>(product);
             //3. Return ProductResultDto
-            return productResult;
+            //return productResult;
+            return product is null ? throw new ProductNotFoundException(id) : productResult;
         }
     }
 }
