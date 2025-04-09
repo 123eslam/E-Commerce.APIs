@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Services.Abstraction;
+using Shared.Parameters;
 using Shared.ProductDtos;
 
 namespace Presentation.Controllers
@@ -9,9 +10,9 @@ namespace Presentation.Controllers
     public class ProductsController(IServiceManager ServiceManager) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductResultDto>>> GetAllProducts(string? sort, int? brandId, int? typeId)
+        public async Task<ActionResult<IEnumerable<ProductResultDto>>> GetAllProducts([FromQuery]ProductSpecificationsParameters parameters)
         {
-            var products = await ServiceManager.ProductService.GetAllProductAsync(sort, brandId, typeId);
+            var products = await ServiceManager.ProductService.GetAllProductAsync(parameters);
             return Ok(products);
         }
         [HttpGet("Brands")]

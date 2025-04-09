@@ -3,6 +3,7 @@ using Domain.Contracts;
 using Domain.Entities.Products;
 using Services.Abstraction;
 using Services.Specifications;
+using Shared.Parameters;
 using Shared.ProductDtos;
 
 namespace Services.ProductServices
@@ -29,10 +30,10 @@ namespace Services.ProductServices
             return typesResult;
         }
 
-        public async Task<IEnumerable<ProductResultDto>> GetAllProductAsync(string? sort, int? brandId, int? typeId)
+        public async Task<IEnumerable<ProductResultDto>> GetAllProductAsync(ProductSpecificationsParameters parameters)
         {
             //1. Retrieve all products => UnitOfWork
-            var products = await UnitOfWork.GetRepository<Product, int>().GetAllAsync(new ProductWithBrandAndTypeSpecifications(sort, brandId, typeId));
+            var products = await UnitOfWork.GetRepository<Product, int>().GetAllAsync(new ProductWithBrandAndTypeSpecifications(parameters));
             //2. Map to ProductResultDto => IMapper
             var productsResult = Mapper.Map<IEnumerable<ProductResultDto>>(products);
             //3. Return IEnumerable<ProductResultDto>
