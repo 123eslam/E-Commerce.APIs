@@ -2,6 +2,7 @@
 using Services.Abstraction;
 using Shared.Parameters;
 using Shared.ProductDtos;
+using Shared.Results;
 
 namespace Presentation.Controllers
 {
@@ -10,7 +11,7 @@ namespace Presentation.Controllers
     public class ProductsController(IServiceManager ServiceManager) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductResultDto>>> GetAllProducts([FromQuery]ProductSpecificationsParameters parameters)
+        public async Task<ActionResult<PaginatedResult<ProductResultDto>>> GetAllProducts([FromQuery]ProductSpecificationsParameters parameters)
         {
             var products = await ServiceManager.ProductService.GetAllProductAsync(parameters);
             return Ok(products);

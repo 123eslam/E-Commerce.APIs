@@ -5,6 +5,7 @@ using Services.Abstraction;
 using Services.Specifications;
 using Shared.Parameters;
 using Shared.ProductDtos;
+using Shared.Results;
 
 namespace Services.ProductServices
 {
@@ -30,14 +31,22 @@ namespace Services.ProductServices
             return typesResult;
         }
 
-        public async Task<IEnumerable<ProductResultDto>> GetAllProductAsync(ProductSpecificationsParameters parameters)
+        public async Task<PaginatedResult<ProductResultDto>> GetAllProductAsync(ProductSpecificationsParameters parameters)
         {
             //1. Retrieve all products => UnitOfWork
             var products = await UnitOfWork.GetRepository<Product, int>().GetAllAsync(new ProductWithBrandAndTypeSpecifications(parameters));
+            var totalCount = await UnitOfWork.GetRepository<Product, int>().CountAsync(new ProductCountSpecifications(parameters));
             //2. Map to ProductResultDto => IMapper
             var productsResult = Mapper.Map<IEnumerable<ProductResultDto>>(products);
-            //3. Return IEnumerable<ProductResultDto>
-            return productsResult;
+            //3. Return PaginatedResult<ProductResultDto>
+            //return productsResult;
+            var result = new PaginatedResult<ProductResultDto>(
+                productsResult.Count(),
+                parameters.PageIndex,
+                totalCount,
+                productsResult
+                );
+            return result;
         }
 
         public async Task<ProductResultDto> GetProductByIdAsync(int id)
