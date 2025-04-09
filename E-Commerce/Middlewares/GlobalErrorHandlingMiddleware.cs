@@ -19,6 +19,8 @@ namespace E_Commerce.Middlewares
             try
             {
                 await _next(context);
+                if (context.Response.StatusCode == (int)HttpStatusCode.NotFound)
+                    await HandleNotFoundApiAsync(context);
             }
             catch (Exception ex)
             {
@@ -28,6 +30,19 @@ namespace E_Commerce.Middlewares
                 await HandleExceptionAsync(context, ex);
             }
         }
+
+        private async Task HandleNotFoundApiAsync(HttpContext context)
+        {
+            //Set content type [application/json]
+            context.Response.ContentType = "application/json";
+            var response = new ErrorDetails
+            {
+                StatusCode = (int)HttpStatusCode.NotFound,
+                ErrorMessage = $"The end point {context.Request.Path} not found"
+            }.ToString();
+            await context.Response.WriteAsync(response);
+        }
+
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             //Set content type [application/json]
