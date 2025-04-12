@@ -3,6 +3,7 @@ using Persistance.Data.DataSeeding;
 using Persistance.Data;
 using Persistance.Repositories;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 
 namespace E_Commerce.Extensions
 {
@@ -17,6 +18,8 @@ namespace E_Commerce.Extensions
             {
                 optios.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
+            //Redis
+            services.AddSingleton<IConnectionMultiplexer>(services => ConnectionMultiplexer.Connect(configuration.GetConnectionString("RedisConnection")!));
             return services;
         }
     }
