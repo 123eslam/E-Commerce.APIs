@@ -20,6 +20,7 @@ namespace E_Commerce.Extensions
             });
             //Redis
             services.AddSingleton<IConnectionMultiplexer>(services => ConnectionMultiplexer.Connect(configuration.GetConnectionString("RedisConnection")!));
+            services.AddScoped<IBasketRepository, BasketRepository>();
             return services;
         }
     }
