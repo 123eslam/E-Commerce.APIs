@@ -4,6 +4,7 @@ using Persistance.Data;
 using Persistance.Repositories;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
+using Persistance.Data.Identity;
 
 namespace E_Commerce.Extensions
 {
@@ -17,6 +18,10 @@ namespace E_Commerce.Extensions
             services.AddDbContext<AppDbContext>(optios =>
             {
                 optios.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            });
+            services.AddDbContext<IdentityAppDbContext>(optios =>
+            {
+                optios.UseSqlServer(configuration.GetConnectionString("IdentityConnection"));
             });
             //Redis
             services.AddSingleton<IConnectionMultiplexer>(services => ConnectionMultiplexer.Connect(configuration.GetConnectionString("RedisConnection")!));
