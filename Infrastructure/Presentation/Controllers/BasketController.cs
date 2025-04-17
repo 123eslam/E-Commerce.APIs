@@ -6,13 +6,8 @@ using System.Net;
 
 namespace Presentation.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class BasketController(IServiceManager _serviceManager) : ControllerBase
+    public class BasketController(IServiceManager _serviceManager) : ApiController
     {
-        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
-        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(ValidationErrorResponse), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(BasketDto), (int)HttpStatusCode.OK)]
         [HttpGet("{id}")]
         public async Task<ActionResult<BasketDto>> Get(string id)
@@ -20,9 +15,6 @@ namespace Presentation.Controllers
             var basket = await _serviceManager.BasketService.GetBasketAsync(id);
             return Ok(basket);
         }
-        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
-        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(ValidationErrorResponse), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(BasketDto), (int)HttpStatusCode.OK)]
         [HttpPost]
         public async Task<ActionResult<BasketDto>> Update(BasketDto basketDto)

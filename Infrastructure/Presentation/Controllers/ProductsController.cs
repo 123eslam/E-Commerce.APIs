@@ -8,13 +8,8 @@ using System.Net;
 
 namespace Presentation.Controllers
 {
-    [ApiController]              //To define a controller is an API controller
-    [Route("api/[controller]")] //baseUrl/api/WeatherForecast
-    public class ProductsController(IServiceManager ServiceManager) : ControllerBase
+    public class ProductsController(IServiceManager ServiceManager) : ApiController
     {
-        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
-        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(ValidationErrorResponse), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(PaginatedResult<ProductResultDto>), (int)HttpStatusCode.OK)]
         [HttpGet]
         public async Task<ActionResult<PaginatedResult<ProductResultDto>>> GetAllProducts([FromQuery]ProductSpecificationsParameters parameters)
@@ -22,9 +17,6 @@ namespace Presentation.Controllers
             var products = await ServiceManager.ProductService.GetAllProductAsync(parameters);
             return Ok(products);
         }
-        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
-        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(ValidationErrorResponse), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(IEnumerable<BrandResultDto>), (int)HttpStatusCode.OK)]
         [HttpGet("Brands")]
         public async Task<ActionResult<IEnumerable<BrandResultDto>>> GetAllBrands()
@@ -32,9 +24,6 @@ namespace Presentation.Controllers
             var brands = await ServiceManager.ProductService.GetAllBrandAsync();
             return Ok(brands);
         }
-        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
-        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(ValidationErrorResponse), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(IEnumerable<TypeResultDto>), (int)HttpStatusCode.OK)]
         [HttpGet("Types")]
         public async Task<ActionResult<IEnumerable<TypeResultDto>>> GetAllTypes()
@@ -42,9 +31,6 @@ namespace Presentation.Controllers
             var types = await ServiceManager.ProductService.GetAllTypeAsync();
             return Ok(types);
         }
-        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.NotFound)]
-        [ProducesResponseType(typeof(ErrorDetails), (int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(ValidationErrorResponse), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ProductResultDto), (int)HttpStatusCode.OK)]
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductResultDto>> GetProductById(int id)
