@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Services.Abstraction;
 using Shared.ErrorModels;
 using Shared.Parameters;
@@ -8,6 +9,7 @@ using System.Net;
 
 namespace Presentation.Controllers
 {
+    [Authorize]
     public class ProductsController(IServiceManager ServiceManager) : ApiController
     {
         [ProducesResponseType(typeof(PaginatedResult<ProductResultDto>), (int)HttpStatusCode.OK)]
