@@ -49,19 +49,27 @@ namespace E_Commerce.Middlewares
             context.Response.ContentType = "application/json";
             //Set status code 
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError; //500
-            context.Response.StatusCode = exception switch
-            {
-                NotFoundException => (int)HttpStatusCode.NotFound, //400
-                _ => (int)HttpStatusCode.InternalServerError //500
-            };
             //return standard error response
             var response = new ErrorDetails //C# object
             {
-                StatusCode = context.Response.StatusCode,
                 ErrorMessage = exception.Message
-            }.ToString();
+            };
+            context.Response.StatusCode = exception switch
+            {
+                NotFoundException => (int)HttpStatusCode.NotFound, //400
+                UnAuthorizedException => (int)HttpStatusCode.Unauthorized, //401
+                ValidationException validationException => HandleValidationException(validationException, response),
+                _ => (int)HttpStatusCode.InternalServerError //500
+            };
+            response.StatusCode = context.Response.StatusCode;
             //Convert C# object to JSON in ErrorDetails class in to string
-            await context.Response.WriteAsync(response);
+            await context.Response.WriteAsync(response.ToString());
+        }
+
+        private int HandleValidationException(ValidationException validationException, ErrorDetails response)
+        {
+            response.Errors = validationException.Errors;
+            return (int)HttpStatusCode.BadRequest; //400
         }
     }
 }
