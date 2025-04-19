@@ -11,5 +11,6 @@
         public decimal SubTotal { get; init; } //OrderItem.Price * OrderItem.Quantity  //Total ==> SubTotal + DeliveryMethod.Price 
         public DateTimeOffset OrderDate { get; init; } = DateTimeOffset.UtcNow;
         public string PaymentIntentId { get; init; } = string.Empty;
+        public decimal Total { get; init; } //SubTotal + DeliveryMethod.Price
     }
 }
