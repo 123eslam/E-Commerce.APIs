@@ -8,7 +8,7 @@ namespace Services.MappingProfiles
     {
         public OrderProfile()
         {
-            CreateMap<Address, AddressDto>();
+            CreateMap<Address, AddressDto>().ReverseMap();
             CreateMap<DeliveryMethod, DeliveryMethodResult>();
             CreateMap<OrderItem, OrderItemDto>()
                 .ForMember(d => d.ProductId, opt => opt.MapFrom(s => s.Product.ProductId))

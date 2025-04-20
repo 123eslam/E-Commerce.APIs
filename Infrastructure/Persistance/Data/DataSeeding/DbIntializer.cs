@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Identity;
+using Domain.Entities.Order_Entitie;
 using Microsoft.AspNetCore.Identity;
 using System.Text.Json;
 
@@ -20,8 +21,8 @@ namespace Persistance.Data.DataSeeding
         {
             try
             {
-                if(_dbContext.Database.GetPendingMigrations().Any())
-                {
+                //if(_dbContext.Database.GetPendingMigrations().Any())
+                //{
                     await _dbContext.Database.MigrateAsync();
                     if (!_dbContext.ProductTypes.Any())
                     {
@@ -59,7 +60,19 @@ namespace Persistance.Data.DataSeeding
                             await _dbContext.SaveChangesAsync();
                         }
                     }
-                }
+                    if (!_dbContext.DeliveryMethods.Any())
+                    {
+                        //D:\E-Commerce.APIs\Infrastructure\Persistance\Data\DataSeeding\delivery.json
+                        var deliveryData = await File.ReadAllTextAsync(@"..\Infrastructure\Persistance\Data\DataSeeding\delivery.json");
+                        //Convert from json file to c# object we use [desirlization]
+                        var deliveries = JsonSerializer.Deserialize<List<DeliveryMethod>>(deliveryData);
+                        if (deliveries is not null && deliveries.Any())
+                        {
+                            await _dbContext.AddRangeAsync(deliveries);
+                            await _dbContext.SaveChangesAsync();
+                        }
+                    }
+                //}
             }
             catch(Exception ex)
             {
