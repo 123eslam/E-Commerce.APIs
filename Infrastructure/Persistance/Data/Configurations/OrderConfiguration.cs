@@ -7,7 +7,8 @@ namespace Persistance.Data.Configurations
         public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder.OwnsOne(o => o.Address, a => a.WithOwner());
-            builder.HasMany(o => o.OrderItems).WithOne();
+            builder.HasMany(o => o.OrderItems).WithOne()
+                   .OnDelete(DeleteBehavior.Cascade);
             builder.Property(o => o.PaymentStatus)
                    .HasConversion
                    (
