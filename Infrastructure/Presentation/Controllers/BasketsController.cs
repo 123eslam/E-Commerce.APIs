@@ -2,13 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Services.Abstraction;
 using Shared.BasketDtos;
-using Shared.ErrorModels;
 using System.Net;
 
 namespace Presentation.Controllers
 {
     [Authorize]
-    public class BasketController(IServiceManager _serviceManager) : ApiController
+    public class BasketsController(IServiceManager _serviceManager) : ApiController
     {
         [ProducesResponseType(typeof(BasketDto), (int)HttpStatusCode.OK)]
         [HttpGet("{id}")]

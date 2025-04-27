@@ -11,7 +11,5 @@ namespace Shared.BasketDtos
         public int Quantity { get; init; }
         [Range(1, double.MaxValue)]
         public decimal Price { get; init; }
-        public string Brand { get; init; }
-        public string Category { get; init; } //Type
     }
 }
