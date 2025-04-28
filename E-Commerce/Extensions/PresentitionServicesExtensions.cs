@@ -16,6 +16,15 @@ namespace E_Commerce.Extensions
                     {
                         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                     });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder =>
+                {
+                    builder.AllowAnyMethod()
+                           .AllowAnyHeader()
+                           .WithOrigins("http://localhost:4200");
+                });
+            });
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(option =>
             {

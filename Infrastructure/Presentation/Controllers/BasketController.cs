@@ -7,10 +7,10 @@ using System.Net;
 namespace Presentation.Controllers
 {
     [Authorize]
-    public class BasketsController(IServiceManager _serviceManager) : ApiController
+    public class BasketController(IServiceManager _serviceManager) : ApiController
     {
         [ProducesResponseType(typeof(BasketDto), (int)HttpStatusCode.OK)]
-        [HttpGet("{id}")]
+        [HttpGet]
         public async Task<ActionResult<BasketDto>> Get(string id)
         {
             var basket = await _serviceManager.BasketService.GetBasketAsync(id);

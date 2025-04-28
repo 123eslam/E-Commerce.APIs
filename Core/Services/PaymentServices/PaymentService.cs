@@ -51,7 +51,7 @@ namespace Services.PaymentServices
                 };
                 var paymentIntent = await service.CreateAsync(createOptions);
                 basket.PaymentIntentId = paymentIntent.Id;
-                basket.ClintSecret = paymentIntent.ClientSecret;
+                basket.clientSecret = paymentIntent.ClientSecret;
             }
             else
             {
