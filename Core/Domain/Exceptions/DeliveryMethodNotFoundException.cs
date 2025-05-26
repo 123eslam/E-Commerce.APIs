@@ -5,5 +5,9 @@
         public DeliveryMethodNotFoundException(int id) : base($"Delivery method with id: {id} was not found.")
         {
         }
+        public DeliveryMethodNotFoundException() : base("No Delivery method with selected.")
+        {
+            
+        }
     }
 }

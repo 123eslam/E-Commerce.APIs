@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Services.Abstraction;
 using Shared.BasketDtos;
-using Shared.ErrorModels;
 using System.Net;
 
 namespace Presentation.Controllers
@@ -11,7 +10,7 @@ namespace Presentation.Controllers
     public class BasketController(IServiceManager _serviceManager) : ApiController
     {
         [ProducesResponseType(typeof(BasketDto), (int)HttpStatusCode.OK)]
-        [HttpGet("{id}")]
+        [HttpGet]
         public async Task<ActionResult<BasketDto>> Get(string id)
         {
             var basket = await _serviceManager.BasketService.GetBasketAsync(id);
